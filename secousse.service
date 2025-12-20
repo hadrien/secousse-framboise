@@ -1,0 +1,13 @@
+[Unit]
+Description=Radio Secousse
+After=network-online.target sound.target
+Wants=network-online.target sound.target
+
+[Service]
+ExecStart=/usr/bin/ffplay -nodisp https://stream.secousse.org/secousse-jahbless
+Type=simple
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
