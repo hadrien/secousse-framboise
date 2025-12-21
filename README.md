@@ -11,13 +11,13 @@ Play Radio Secousse on your Raspberry Pi as a systemd service.
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/hadrien/secousse-framboise/main/install.sh | sudo bash
+curl -fsSL -H "Cache-Control: no-cache" https://raw.githubusercontent.com/hadrien/secousse-framboise/main/install.sh | sudo bash
 ```
 
 ## Uninstall
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/hadrien/secousse-framboise/main/uninstall.sh | sudo bash
+curl -fsSL -H "Cache-Control: no-cache" https://raw.githubusercontent.com/hadrien/secousse-framboise/main/uninstall.sh | sudo bash
 ```
 
 ## Usage
