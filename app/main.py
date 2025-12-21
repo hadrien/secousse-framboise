@@ -99,11 +99,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             font-weight: bold;
             color: #000;
             margin-top: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }}
         .track {{
             font-size: 1.2rem;
             color: #000;
             margin-top: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }}
         .grid {{
             display: grid;
@@ -151,6 +159,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         .btn-jahbless {{ font-family: "Arial Black", sans-serif; }}
         .btn-hillbilly {{ font-family: "Courier New", monospace; font-weight: bold; }}
         .btn-ole {{ font-family: "Georgia", serif; font-style: italic; font-weight: bold; }}
+        
+        @media (max-width: 480px) {{
+            .btn {{
+                padding: 15px 10px;
+                font-size: 1.2rem;
+            }}
+            .grid {{
+                gap: 10px;
+            }}
+        }}
     </style>
 </head>
 <body>
