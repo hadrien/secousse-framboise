@@ -1,3 +1,4 @@
+import json
 import subprocess
 from pathlib import Path
 
@@ -15,6 +16,18 @@ STREAMS = {
     "secousse-jahbless": "JAH BLESS",
     "secousse-hillbilly": "HILLBILLY",
     "secousse-ole": "OLE!",
+}
+
+# Mapping from stream_id to API mount name
+STREAM_MOUNTS = {
+    "secousse": "secousse",
+    "secousse-party": "party",
+    "secousse-chill": "chill",
+    "secousse-street": "street",
+    "secousse-trippy": "trippy",
+    "secousse-jahbless": "jahbless",
+    "secousse-hillbilly": "hillbilly",
+    "secousse-ole": "ole",
 }
 
 CONFIG_PATH = Path("/etc/secousse/stream.conf")
@@ -68,6 +81,30 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             background-color: #fff;
             margin-bottom: 20px;
         }}
+        .track-info {{
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 20px;
+        }}
+        .cover {{
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 8px;
+            background-color: #5a45a0;
+        }}
+        .artist {{
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000;
+            margin-top: 10px;
+        }}
+        .track {{
+            font-size: 1.2rem;
+            color: #000;
+            margin-top: 5px;
+        }}
         .grid {{
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -119,10 +156,35 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <body>
     <h1>The Radios</h1>
     <div class="divider"></div>
+    <div class="track-info">
+        <img id="cover" class="cover" src="" alt="Album cover">
+        <div id="artist" class="artist"></div>
+        <div id="track" class="track"></div>
+    </div>
     <div class="grid">
         {buttons}
     </div>
     <script>
+        const streamMounts = {stream_mounts};
+        let currentStream = '{current_stream}';
+
+        async function fetchTrackInfo() {{
+            const mount = streamMounts[currentStream];
+            if (!mount) return;
+            
+            try {{
+                const response = await fetch(`https://secousse.tv/player/title_json.php?mount=${{mount}}`);
+                if (response.ok) {{
+                    const data = await response.json();
+                    document.getElementById('cover').src = data.thumbnail || '';
+                    document.getElementById('artist').textContent = data.artist || '';
+                    document.getElementById('track').textContent = data.track || '';
+                }}
+            }} catch (error) {{
+                console.error('Failed to fetch track info:', error);
+            }}
+        }}
+
         async function selectStream(stream) {{
             const buttons = document.querySelectorAll('.btn');
             buttons.forEach(btn => btn.disabled = true);
@@ -132,6 +194,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 if (response.ok) {{
                     buttons.forEach(btn => btn.classList.remove('active'));
                     document.querySelector(`[data-stream="${{stream}}"]`).classList.add('active');
+                    currentStream = stream;
+                    fetchTrackInfo();
                 }}
             }} catch (error) {{
                 console.error('Failed to change stream:', error);
@@ -139,6 +203,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 buttons.forEach(btn => btn.disabled = false);
             }}
         }}
+
+        // Fetch track info on load and every 10 seconds
+        fetchTrackInfo();
+        setInterval(fetchTrackInfo, 10000);
     </script>
 </body>
 </html>
@@ -166,7 +234,12 @@ async def index():
             f'<button class="btn {btn_class} {active}" data-stream="{stream_id}" '
             f"onclick=\"selectStream('{stream_id}')\">{label}</button>"
         )
-    return HTML_TEMPLATE.format(buttons="\n        ".join(buttons))
+    stream_mounts_json = json.dumps(STREAM_MOUNTS)
+    return HTML_TEMPLATE.format(
+        buttons="\n        ".join(buttons),
+        stream_mounts=stream_mounts_json,
+        current_stream=current,
+    )
 
 
 @app.post("/stream/{stream_id}")
