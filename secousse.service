@@ -4,11 +4,9 @@ After=network-online.target sound.target
 Wants=network-online.target sound.target
 
 [Service]
-User=hadrien
-Group=hadrien
 Environment="SDL_AUDIODRIVER=alsa"
 Environment="AUDIODEV=plughw:1,0"
-ExecStart=/usr/bin/ffplay -nodisp https://stream.secousse.org/secousse-jahbless
+ExecStart=/bin/bash -c '/usr/bin/ffplay -nodisp https://stream.secousse.org/$(cat /etc/secousse/stream.conf)'
 Type=simple
 Restart=always
 RestartSec=2

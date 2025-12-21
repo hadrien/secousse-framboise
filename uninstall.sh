@@ -3,12 +3,19 @@ set -e
 
 echo "Uninstalling Radio Secousse..."
 
-# Stop and disable the service
-systemctl stop secousse || true
-systemctl disable secousse || true
+# Stop and disable services
+systemctl stop secousse secousse-web || true
+systemctl disable secousse secousse-web || true
 
-# Remove the service file
+# Remove service files
 rm -f /etc/systemd/system/secousse.service
+rm -f /etc/systemd/system/secousse-web.service
+
+# Remove application directory
+rm -rf /opt/secousse-web
+
+# Remove config directory
+rm -rf /etc/secousse
 
 # Reload systemd
 systemctl daemon-reload
