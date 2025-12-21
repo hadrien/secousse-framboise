@@ -2,6 +2,10 @@
 
 Play Radio Secousse on your Raspberry Pi with a retro jukebox web interface.
 
+> [!IMPORTANT]
+> **Support Radio Secousse!** [Subscribe $ at secousse.tv](https://secousse.tv)
+
+
 ## Features
 
 - Stream 8 Radio Secousse channels: RADIO, PARTY, CHILL, STREET, TRIPPY, JAH BLESS, HILLBILLY, OLÉ
