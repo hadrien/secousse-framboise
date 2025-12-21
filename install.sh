@@ -13,7 +13,7 @@ curl -fsSL https://raw.githubusercontent.com/hadrien/secousse-framboise/main/sec
 # Reload systemd and enable the service
 systemctl daemon-reload
 systemctl enable secousse
-systemctl start secousse
+systemctl restart secousse
 
 echo "Radio Secousse installed and started!"
 echo "Check status with: systemctl status secousse"

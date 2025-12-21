@@ -4,6 +4,10 @@ After=network-online.target sound.target
 Wants=network-online.target sound.target
 
 [Service]
+User=pi
+Group=pi
+Environment="SDL_AUDIODRIVER=alsa"
+Environment="AUDIODEV=plughw:1,0"
 ExecStart=/usr/bin/ffplay -nodisp https://stream.secousse.org/secousse-jahbless
 Type=simple
 Restart=always
