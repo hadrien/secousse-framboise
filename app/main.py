@@ -66,21 +66,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             padding: 20px;
             font-family: Arial, sans-serif;
         }}
-        h1 {{
-            color: #000;
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }}
-        .divider {{
-            width: 100%;
-            max-width: 600px;
-            height: 8px;
-            background-color: #fff;
-            margin-bottom: 20px;
-        }}
         .track-info {{
             width: 100%;
             max-width: 600px;
@@ -172,8 +157,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </style>
 </head>
 <body>
-    <h1>The Radios</h1>
-    <div class="divider"></div>
     <div class="track-info">
         <img id="cover" class="cover" src="" alt="Album cover">
         <div id="artist" class="artist"></div>
