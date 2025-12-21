@@ -15,7 +15,7 @@ STREAMS = {
     "secousse-trippy": "TRIPPY",
     "secousse-jahbless": "JAH BLESS",
     "secousse-hillbilly": "HILLBILLY",
-    "secousse-ole": "OLE!",
+    "secousse-ole": "OLÉ!",
 }
 
 # Mapping from stream_id to API mount name
@@ -50,7 +50,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Radios</title>
+    <title>Secousse - {current_label}</title>
     <style>
         * {{
             margin: 0;
@@ -184,6 +184,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
     <script>
         const streamMounts = {stream_mounts};
+        const streams = {streams};
         let currentStream = '{current_stream}';
 
         async function fetchTrackInfo() {{
@@ -213,6 +214,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                     buttons.forEach(btn => btn.classList.remove('active'));
                     document.querySelector(`[data-stream="${{stream}}"]`).classList.add('active');
                     currentStream = stream;
+                    document.title = `Secousse - ${{streams[stream]}}`;
                     fetchTrackInfo();
                 }}
             }} catch (error) {{
@@ -253,10 +255,13 @@ async def index():
             f"onclick=\"selectStream('{stream_id}')\">{label}</button>"
         )
     stream_mounts_json = json.dumps(STREAM_MOUNTS)
+    streams_json = json.dumps(STREAMS)
     return HTML_TEMPLATE.format(
         buttons="\n        ".join(buttons),
         stream_mounts=stream_mounts_json,
+        streams=streams_json,
         current_stream=current,
+        current_label=STREAMS[current],
     )
 
 
