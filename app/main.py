@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 app = FastAPI()
 
@@ -50,6 +50,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/favicon.png">
     <title>Secousse - {current_label}</title>
     <style>
         * {{
@@ -259,3 +260,8 @@ async def change_stream(stream_id: str):
 @app.get("/api/status")
 async def status():
     return {"stream": get_current_stream()}
+
+
+@app.get("/favicon.png")
+async def favicon():
+    return FileResponse(Path(__file__).parent / "favicon.png", media_type="image/png")
