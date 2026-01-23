@@ -1,3 +1,1 @@
-# Agent Instructions
-
-See [README.md](README.md) for project documentation.
+Load @README.md for context.
